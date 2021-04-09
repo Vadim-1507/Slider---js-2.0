@@ -42,13 +42,17 @@ function handlerMoveSwipe(e) {
 
     if (Math.abs(xDifference) > Math.abs(yDifference)) {
         if (xDifference > 0) {
-            count++;
-            console.log(count)
-            rollSlider();
+            slider.addEventListener('touchend', () => {
+                count++;
+                console.log(count)
+                rollSlider();
+            })
         } else {
-            count--;
-            console.log(count)
-            rollSlider();
+            slider.addEventListener('touchend', () => {
+                count--;
+                console.log(count)
+                rollSlider();
+            })
         }
     }
 }
