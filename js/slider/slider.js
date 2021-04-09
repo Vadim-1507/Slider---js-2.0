@@ -1,13 +1,13 @@
-function Slider({slider_item, slider_line, slider_body, arrow_next, arrow_prev, propsDot}) {
-    const sliderItem = document.querySelectorAll(slider_item),
-        sliderLine = document.querySelector(slider_line),
-        slider = document.querySelector(slider_body);
-    let count = 0,
-        x1 = null,
-        y1 = null,
-        width,
-        right = false,
-        left = false;
+function Slider({slider_item, slider_line, slider_body, arrow_next, arrow_prev}) {
+    const sliderItem = document.querySelectorAll(slider_item);
+    const sliderLine = document.querySelector(slider_line);
+    const slider = document.querySelector(slider_body);
+    let count = 0;
+    let x1 = null;
+    let y1 = null;
+    let width;
+    let right = false;
+    let left = false;
 
     window.addEventListener('resize', init);
     slider.addEventListener('touchstart', handlerStartSwipe, false);
@@ -17,7 +17,6 @@ function Slider({slider_item, slider_line, slider_body, arrow_next, arrow_prev, 
     document.querySelector(arrow_prev).addEventListener('click', prevSlide);
 
     init();
-    if (propsDot) showDots();
 
     function init() {
         width = slider.offsetWidth;
@@ -84,38 +83,34 @@ function Slider({slider_item, slider_line, slider_body, arrow_next, arrow_prev, 
     }
 
 // dots
-    let activeDot;
+    const dotsWrapper = document.createElement('ul'),
+        dots = [];
+    dotsWrapper.classList.add('slider__carousel');
+    document.querySelector('.slider').append(dotsWrapper);
 
-    function showDots() {
-        const dotsWrapper = document.createElement('ul'),
-            dots = [];
-        dotsWrapper.classList.add('slider__carousel');
-        document.querySelector('.slider').append(dotsWrapper);
-
-        dots.forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                const slideTo = e.target.getAttribute('data-slide-to');
-                count = slideTo - 1;
-                sliderLine.style.transform = `translate(-${count * width}px)`;
-                activeDot();
-            });
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            const slideTo = e.target.getAttribute('data-slide-to');
+            count = slideTo - 1;
+            sliderLine.style.transform = `translate(-${count * width}px)`;
+            activeDot();
         });
+    });
 
-        for (let i = 0; i < sliderItem.length; i++) {
-            const dot = document.createElement('li');
-            dot.setAttribute('data-slide-to', i + 1);
-            dot.classList.add('slider__dot');
-            if (i === 0) {
-                dot.classList.add('slider__dot_active');
-            }
-            dotsWrapper.append(dot);
-            dots.push(dot);
+    for (let i = 0; i < sliderItem.length; i++) {
+        const dot = document.createElement('li');
+        dot.setAttribute('data-slide-to', i + 1);
+        dot.classList.add('slider__dot');
+        if (i === 0) {
+            dot.classList.add('slider__dot_active');
         }
+        dotsWrapper.append(dot);
+        dots.push(dot);
+    }
 
-        activeDot = () => {
-            dots.forEach(dot => dot.classList.remove('slider__dot_active'));
-            dots[count].classList.add('slider__dot_active');
-        }
+    function activeDot() {
+        dots.forEach(dot => dot.classList.remove('slider__dot_active'));
+        dots[count].classList.add('slider__dot_active');
     }
 }
 
