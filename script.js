@@ -6,7 +6,9 @@ const sliderItem = document.querySelectorAll('.slider__item'),
 let count = 0,
     x1 = null,
     y1 = null,
-    width;
+    width,
+    right = false,
+    left = false;
 
 init();
 window.addEventListener('resize', init);
@@ -42,19 +44,25 @@ function handlerMoveSwipe(e) {
 
     if (Math.abs(xDifference) > Math.abs(yDifference)) {
         if (xDifference > 0) {
-            slider.addEventListener('touchend', () => {
-                count++;
-                console.log(count)
-                rollSlider();
-            })
+            right = true;
         } else {
-            slider.addEventListener('touchend', () => {
-                count--;
-                console.log(count)
-                rollSlider();
-            })
+            left = true;
         }
     }
+    swipeSlider()
+}
+
+function swipeSlider() {
+    if (right === true) {
+        count++;
+        rollSlider();
+        right = false;
+    } else if (left === true) {
+        count--;
+        rollSlider();
+        left = false;
+    }
+
 }
 
 document.querySelector('.slider__arrow-next').addEventListener('click', () => {
