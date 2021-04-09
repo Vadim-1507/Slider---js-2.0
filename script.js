@@ -65,11 +65,13 @@ function swipeSlider() {
 function nextSlide() {
     count++;
     rollSlider();
+    activeDot();
 }
 
 function prevSlide() {
     count--;
     rollSlider();
+    activeDot();
 }
 
 function rollSlider() {
@@ -79,4 +81,36 @@ function rollSlider() {
         count = sliderItem.length - 1;
     }
     sliderLine.style.transform = `translate(-${count * width}px)`;
+}
+
+// dots
+
+const dotsWrapper = document.createElement('ul'),
+    dots = [];
+dotsWrapper.classList.add('carousel');
+document.querySelector('.slider').append(dotsWrapper);
+
+dots.forEach(dot => {
+    dot.addEventListener('click', (e) => {
+        const slideTo = e.target.getAttribute('data-slide-to');
+        count = slideTo - 1;
+        sliderLine.style.transform = `translate(-${count * width}px)`;
+        activeDot();
+    });
+});
+
+function activeDot() {
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[count].classList.add('active');
+}
+
+for (let i = 0; i < sliderItem.length; i++) {
+    const dot = document.createElement('li');
+    dot.setAttribute('data-slide-to', i + 1);
+    dot.classList.add('dot');
+    if (i === 0) {
+        dot.classList.add('active');
+    }
+    dotsWrapper.append(dot);
+    dots.push(dot);
 }
