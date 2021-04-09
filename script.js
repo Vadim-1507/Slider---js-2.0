@@ -12,6 +12,11 @@ let count = 0,
 
 init();
 window.addEventListener('resize', init);
+slider.addEventListener('touchstart', handlerStartSwipe, false);
+slider.addEventListener('touchmove', handlerMoveSwipe, false);
+slider.addEventListener('touchend', swipeSlider)
+document.querySelector('.slider__arrow-next').addEventListener('click', nextSlide);
+document.querySelector('.slider__arrow-prev').addEventListener('click', prevSlide);
 
 function init() {
     width = slider.offsetWidth;
@@ -22,12 +27,8 @@ function init() {
     })
     const video = document.querySelector('.slider__item iframe');
     video.style.width = `${width}px`;
-
     rollSlider();
 }
-
-slider.addEventListener('touchstart', handlerStartSwipe, false);
-slider.addEventListener('touchmove', handlerMoveSwipe, false);
 
 function handlerStartSwipe(e) {
     const touchStart = e.touches[0];
@@ -41,7 +42,6 @@ function handlerMoveSwipe(e) {
         y2 = e.touches[0].clientY,
         xDifference = x2 - x1,
         yDifference = y2 - y1;
-
     if (Math.abs(xDifference) > Math.abs(yDifference)) {
         if (xDifference > 0) {
             right = true;
@@ -49,31 +49,28 @@ function handlerMoveSwipe(e) {
             left = true;
         }
     }
-    swipeSlider()
 }
 
 function swipeSlider() {
     if (right === true) {
-        count++;
-        rollSlider();
+        prevSlide();
         right = false;
+
     } else if (left === true) {
-        count--;
-        rollSlider();
+        nextSlide();
         left = false;
     }
-
 }
 
-document.querySelector('.slider__arrow-next').addEventListener('click', () => {
+function nextSlide() {
     count++;
     rollSlider();
-});
+}
 
-document.querySelector('.slider__arrow-prev').addEventListener('click', () => {
+function prevSlide() {
     count--;
     rollSlider();
-});
+}
 
 function rollSlider() {
     if (count >= sliderItem.length) {
