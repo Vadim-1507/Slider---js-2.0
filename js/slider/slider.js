@@ -88,15 +88,6 @@ function Slider({slider_item, slider_line, slider_body, arrow_next, arrow_prev})
     dotsWrapper.classList.add('slider__carousel');
     document.querySelector('.slider').append(dotsWrapper);
 
-    dots.forEach(dot => {
-        dot.addEventListener('click', (e) => {
-            const slideTo = e.target.getAttribute('data-slide-to');
-            count = slideTo - 1;
-            sliderLine.style.transform = `translate(-${count * width}px)`;
-            activeDot();
-        });
-    });
-
     for (let i = 0; i < sliderItem.length; i++) {
         const dot = document.createElement('li');
         dot.setAttribute('data-slide-to', i + 1);
@@ -107,6 +98,17 @@ function Slider({slider_item, slider_line, slider_body, arrow_next, arrow_prev})
         dotsWrapper.append(dot);
         dots.push(dot);
     }
+
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            const slideTo = e.target.getAttribute('data-slide-to');
+            count = slideTo - 1;
+            sliderLine.style.transform = `translate(-${count * width}px)`;
+            activeDot();
+        });
+    });
+
 
     function activeDot() {
         dots.forEach(dot => dot.classList.remove('slider__dot_active'));

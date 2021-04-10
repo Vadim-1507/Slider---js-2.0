@@ -6,4 +6,4 @@ Slider({
     slider_body: '.slider__body',
     arrow_next: '.slider__arrow-next',
     arrow_prev: '.slider__arrow-prev'
-})
+});
